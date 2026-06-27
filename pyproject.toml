@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=75.0", "setuptools-scm>=8"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "biocpu" 
+version = "0.1.0" 
+description = "Test framework for simulation of brain learning on CPU" 
+readme = "README.md" 
+license = "MIT" 
+requires-python = ">=3.11" 
+authors = [
+    {name = "Mykhailo Lapshyn", email = "lapshynmisha@gmail.com"},
+]
+keywords = ["cpu", "cpu-learning", "biological learning", "ai-optimization"] 
+classifiers = [
+    "Development Status :: 3 - Alpha", 
+    "Intended Audience :: Science/Research", 
+    "Topic :: Scientific/Engineering :: Artificial Intelligence", 
+    "Programming Language :: Python :: 3.11" 
+]
+dependencies = [
+    "numpy>=1.26", 
+    "numba>=0.60", 
+    "scipy>=1.14",
+    "h5py>=3.11",
+    "PyYAML>=6.0.3" 
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0", 
+    "pytest-cov>=5.0", 
+    "ruff>=0.8",
+    "mypy>=1.13",
+]
+docs = [
+    "sphinx>=8.0", 
+    "sphinx-rtd-theme>=3.0" 
+]
+
+[project.urls]
+Homepage = "https://github.com/LordCoder100/BioCPU" 
+Repository = "https://github.com/LordCoder100/BioCPU" 
+Issues = "https://github.com/LordCoder100/BioCPU/issues" 
+
+[tool.setuptools.packages.find]
+where = ["."] 
+include = ["biocpu*"]
+
+[tool.ruff] 
+target-version = "py311" 
+line-length = 100 
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "SIM", "RUF"] 
+
+[tool.pytest.ini_options]
+testpaths = ["tests"] 
+addopts = "-v --tb=short" 
+
+[tool.mypy] 
+python_version = "3.11" 
+warn_return_any = true 
+warn_unused_config = true 
+disallow_untyped_defs = true 
