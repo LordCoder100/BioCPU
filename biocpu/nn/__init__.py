@@ -1,6 +1,6 @@
 """biocpu.nn — neural network building blocks."""
 
 from . import functional
-from .modules import Module, SettleLinear, Sequential
+from .modules import Module, Sequential, SettleLinear
 
-__all__ = ["functional", "Module", "SettleLinear", "Sequential"]
+__all__ = ["Module", "Sequential", "SettleLinear", "functional"]

@@ -38,7 +38,7 @@ def train_logic_gate(
     )
 
     learner = biocpu.optim.Local(model, n_classes=2, lr=lr, beta=beta)
-    
+
     # Train
     learner.fit(
         X_train, y_train,
@@ -132,37 +132,39 @@ def test_high_dimensional_logic_generalization():
     rng = np.random.default_rng(42)
     # Generate 2000 samples of 10-dimensional binary variables
     X_bits = rng.integers(0, 2, size=(2000, 10))
-    
-    # Target function with operator priority and nested structure
-    y = (((X_bits[:, 0] != X_bits[:, 1]) & (X_bits[:, 2] | X_bits[:, 3])) ^ (X_bits[:, 4] == 1)).astype(np.int64)
-    
+
+    y = (
+        ((X_bits[:, 0] != X_bits[:, 1]) & (X_bits[:, 2] | X_bits[:, 3]))
+        ^ (X_bits[:, 4] == 1)
+    ).astype(np.int64)
+
     # Inputs converted to float64
     X_clean = X_bits.astype(np.float64)
-    
+
     # Split: 1600 training, 400 test
     X_train, X_test = X_clean[:1600], X_clean[1600:]
     y_train, y_test = y[:1600], y[1600:]
-    
+
     # Add input noise during training to evaluate robustness
     X_train_noisy = X_train + rng.normal(0, 0.15, size=X_train.shape)
-    
+
     # Model: 10 inputs -> 64 hidden -> 2 output classes
     model = nn.Sequential(
         nn.SettleLinear(10, 64, gamma=0.9, k=3, seed=42),
         nn.SettleLinear(64, 2, seed=43),
         kwta_frac=0.3,  # k = 19 active hidden units
     )
-    
+
     learner = biocpu.optim.Local(model, n_classes=2, lr=0.05, beta=0.5)
-    
+
     # Train
     learner.fit(X_train_noisy, y_train, epochs=150, batch=32, seed=0, verbose=False)
-    
+
     # Generalization test on clean test data
     test_acc = learner.accuracy(X_test, y_test)
-    print(f"\nHigh-Dimensional Logic Generalization:")
+    print("\nHigh-Dimensional Logic Generalization:")
     print(f"Test Accuracy on clean unseen test data: {test_acc:.2%}")
-    
+
     assert test_acc > 0.93, f"Expected generalization accuracy > 93%, got {test_acc:.2%}"
 
 
@@ -189,7 +191,7 @@ def test_feedback_alignment_xor():
 
     # Use feedback='fa' to enable Feedback Alignment
     learner = biocpu.optim.Local(model, n_classes=2, lr=0.15, beta=0.5, feedback="fa")
-    
+
     learner.fit(X_train, y_train, epochs=250, batch=16, seed=0, verbose=False)
 
     predictions = learner.predict(X)
@@ -202,19 +204,19 @@ if __name__ == "__main__":
     print("=" * 60)
     print("RUNNING LOGIC TESTS")
     print("=" * 60)
-    
+
     print("\n[1/4] Testing standard gates (AND, OR, XOR)...")
     test_logic_gates()
-    
+
     print("\n[2/4] Testing nested noisy logic generalization (3D input)...")
     test_nested_noisy_logic()
-    
+
     print("\n[3/4] Testing high-dimensional logic generalization (10D input, 2000 samples)...")
     test_high_dimensional_logic_generalization()
-    
+
     print("\n[4/4] Testing Feedback Alignment (FA) on XOR...")
     test_feedback_alignment_xor()
-    
+
     print("\n" + "=" * 60)
     print("ALL LOGIC TESTS PASSED!")
     print("=" * 60)
