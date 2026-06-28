@@ -16,7 +16,7 @@ from __future__ import annotations
 import numpy as np
 
 from ..context import PhaseContext
-from ..nn.functional._functions import one_hot, k_wta_mask
+from ..nn.functional._functions import k_wta_mask, one_hot
 
 
 class Local:
@@ -68,12 +68,12 @@ class Local:
         for li in range(last - 1, -1, -1):
             d_next = deltas[li + 1]
             assert d_next is not None, f"delta missing for layer {li + 1}"
-            
+
             if self.feedback == "fa":
                 W_next = self.B_matrices[traces[li + 1].module]
             else:
                 W_next = traces[li + 1].module.W.value
-                
+
             d = d_next @ W_next
             x_li = traces[li].equilibrium
             k = max(1, int(kfrac * x_li.shape[1]))

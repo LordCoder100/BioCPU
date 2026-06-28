@@ -6,12 +6,12 @@ and checks that accuracy exceeds a baseline threshold.
 Run:  pytest tests/test_mnist.py -v -s
 """
 from __future__ import annotations
-from torchvision import datasets  # pyrefly: ignore
+
 import numpy as np
+from torchvision import datasets  # pyrefly: ignore
 
 import biocpu
 import biocpu.nn as nn
-
 
 # ── helpers ──────────────────────────────────────────────────────
 
@@ -44,7 +44,7 @@ def test_mnist_m0_baseline():
     )
 
     learner = biocpu.optim.Local(model, n_classes=10, lr=0.05, beta=0.5)
-    history = learner.fit(
+    learner.fit(
         X_train, y_train,
         X_val=X_test, y_val=y_test,
         epochs=15, batch=128, seed=0, verbose=True,
@@ -70,7 +70,7 @@ def test_mnist_with_coupling():
     )
 
     learner = biocpu.optim.Local(model, n_classes=10, lr=0.05, beta=0.5)
-    history = learner.fit(
+    learner.fit(
         X_train, y_train,
         X_val=X_test, y_val=y_test,
         epochs=15, batch=128, seed=0, verbose=True,
@@ -86,7 +86,7 @@ def test_mnist_with_coupling():
 
 def test_phase_context_populated():
     """PhaseContext collects one trace per SettleLinear layer."""
-    X_train, y_train, _, _ = load_mnist()
+    X_train, _, _, _ = load_mnist()
 
     model = nn.Sequential(
         nn.SettleLinear(784, 128, seed=42),
@@ -107,17 +107,17 @@ if __name__ == "__main__":
     print("=" * 60)
     print("STARTING FULL MNIST INTEGRATION TESTING AND TRAINING")
     print("=" * 60)
-    
+
     print("\n[1/3] Running baseline M=0 training (no lateral coupling)...")
     test_mnist_m0_baseline()
-    
+
     print("\n[2/3] Running training with lateral coupling (M scale = 0.5)...")
     test_mnist_with_coupling()
-    
+
     print("\n[3/3] Checking PhaseContext traces...")
     test_phase_context_populated()
     print("PhaseContext OK.")
-    
+
     print("\n" + "=" * 60)
     print("ALL TESTS PASSED SUCCESSFULLY!")
     print("=" * 60)

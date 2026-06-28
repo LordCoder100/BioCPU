@@ -7,9 +7,9 @@ from __future__ import annotations
 
 import numpy as np
 
-from .module import Module
 from ...parameter import Parameter
 from ..functional._functions import equilibrium, random_symmetric
+from .module import Module
 
 
 class SettleLinear(Module):
