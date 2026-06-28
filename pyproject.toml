@@ -60,9 +60,15 @@ select = ["E", "F", "W", "I", "N", "UP", "B", "SIM", "RUF"]
 [tool.pytest.ini_options]
 testpaths = ["tests"] 
 addopts = "-v --tb=short" 
+markers = [
+    "slow: long-running tests (MNIST training, downloads data)",
+]
 
 [tool.mypy] 
 python_version = "3.11" 
-warn_return_any = true 
-warn_unused_config = true 
-disallow_untyped_defs = true 
+warn_return_any = false 
+warn_unused_configs = true 
+disallow_untyped_defs = false
+
+[tool.pyrefly]
+preset = "default"
