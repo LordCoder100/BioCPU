@@ -5,6 +5,7 @@ and non-linearly separable (XOR) boolean functions.
 
 Run:  pytest tests/test_logic.py -v
 """
+
 from __future__ import annotations
 
 import numpy as np
@@ -41,7 +42,8 @@ def train_logic_gate(
 
     # Train
     learner.fit(
-        X_train, y_train,
+        X_train,
+        y_train,
         epochs=epochs,
         batch=16,
         seed=seed,
@@ -57,17 +59,12 @@ def train_logic_gate(
 
 def test_logic_gates():
     # Input data: 4 combinations of two boolean variables
-    X = np.array([
-        [0.0, 0.0],
-        [0.0, 1.0],
-        [1.0, 0.0],
-        [1.0, 1.0]
-    ], dtype=np.float64)
+    X = np.array([[0.0, 0.0], [0.0, 1.0], [1.0, 0.0], [1.0, 1.0]], dtype=np.float64)
 
     # Gate targets
     gates = {
         "AND": np.array([0, 0, 0, 1], dtype=np.int64),
-        "OR":  np.array([0, 1, 1, 1], dtype=np.int64),
+        "OR": np.array([0, 1, 1, 1], dtype=np.int64),
         "XOR": np.array([0, 1, 1, 0], dtype=np.int64),
     }
 
@@ -83,16 +80,19 @@ def test_nested_noisy_logic():
     f(A, B, C) = (A XOR B) AND (B OR C).
     """
     # 8 combinations of 3 variables
-    X_clean = np.array([
-        [0.0, 0.0, 0.0],
-        [0.0, 0.0, 1.0],
-        [0.0, 1.0, 0.0],
-        [0.0, 1.0, 1.0],
-        [1.0, 0.0, 0.0],
-        [1.0, 0.0, 1.0],
-        [1.0, 1.0, 0.0],
-        [1.0, 1.0, 1.0]
-    ], dtype=np.float64)
+    X_clean = np.array(
+        [
+            [0.0, 0.0, 0.0],
+            [0.0, 0.0, 1.0],
+            [0.0, 1.0, 0.0],
+            [0.0, 1.0, 1.0],
+            [1.0, 0.0, 0.0],
+            [1.0, 0.0, 1.0],
+            [1.0, 1.0, 0.0],
+            [1.0, 1.0, 1.0],
+        ],
+        dtype=np.float64,
+    )
 
     # Truth table for f(A, B, C) = (A XOR B) AND (B OR C)
     y = np.array([0, 0, 1, 1, 0, 1, 0, 0], dtype=np.int64)
@@ -134,8 +134,7 @@ def test_high_dimensional_logic_generalization():
     X_bits = rng.integers(0, 2, size=(2000, 10))
 
     y = (
-        ((X_bits[:, 0] != X_bits[:, 1]) & (X_bits[:, 2] | X_bits[:, 3]))
-        ^ (X_bits[:, 4] == 1)
+        ((X_bits[:, 0] != X_bits[:, 1]) & (X_bits[:, 2] | X_bits[:, 3])) ^ (X_bits[:, 4] == 1)
     ).astype(np.int64)
 
     # Inputs converted to float64
@@ -172,12 +171,7 @@ def test_feedback_alignment_xor():
     """Tests Feedback Alignment (FA) by training a model on XOR
     using a fixed random feedback matrix B (no weight transport).
     """
-    X = np.array([
-        [0.0, 0.0],
-        [0.0, 1.0],
-        [1.0, 0.0],
-        [1.0, 1.0]
-    ], dtype=np.float64)
+    X = np.array([[0.0, 0.0], [0.0, 1.0], [1.0, 0.0], [1.0, 1.0]], dtype=np.float64)
     y = np.array([0, 1, 1, 0], dtype=np.int64)
 
     X_train = np.tile(X, (32, 1))
@@ -220,6 +214,3 @@ if __name__ == "__main__":
     print("\n" + "=" * 60)
     print("ALL LOGIC TESTS PASSED!")
     print("=" * 60)
-
-
-

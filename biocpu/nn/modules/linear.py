@@ -3,6 +3,7 @@
 Computes the equilibrium of linear relaxation (Neumann series).
 Parameters: W (input weights), optional M (symmetric lateral coupling).
 """
+
 from __future__ import annotations
 
 import numpy as np
@@ -43,8 +44,7 @@ class SettleLinear(Module):
         self.W = Parameter(W)
 
         if coupling is not None and coupling > 0:
-            M = random_symmetric(out_dim, scale=coupling, gamma=gamma,
-                                 seed=seed + 100)
+            M = random_symmetric(out_dim, scale=coupling, gamma=gamma, seed=seed + 100)
             self.M = Parameter(M, requires_learning=False)
         else:
             self.M = None
