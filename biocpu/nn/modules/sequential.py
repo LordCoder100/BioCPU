@@ -9,7 +9,7 @@ class Sequential(Module):
         super().__init__()
         self._ordered = []
         for i, m in enumerate(modules):
-            setattr(self, f"layer{i}", m)       # реєстрація як підмодуля
+            setattr(self, f"layer{i}", m)  # реєстрація як підмодуля
             self._ordered.append(m)
         self.kwta_frac = kwta_frac
 

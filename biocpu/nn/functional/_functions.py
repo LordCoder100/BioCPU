@@ -1,4 +1,5 @@
 """Low-level functional operations for BioCPU."""
+
 from __future__ import annotations
 
 import numpy as np
@@ -41,9 +42,7 @@ def equilibrium(
     return acc
 
 
-def equilibrium_exact(
-    W: np.ndarray, u: np.ndarray, M: np.ndarray, gamma: float
-) -> np.ndarray:
+def equilibrium_exact(W: np.ndarray, u: np.ndarray, M: np.ndarray, gamma: float) -> np.ndarray:
     """Exact equilibrium via matrix inverse (reference for tests)."""
     u = np.atleast_2d(u)
     inv = np.linalg.inv(np.eye(M.shape[0]) - gamma * M)
@@ -73,9 +72,7 @@ def one_hot(y: np.ndarray, n_classes: int) -> np.ndarray:
     return Y
 
 
-def random_symmetric(
-    n: int, scale: float, gamma: float, seed: int = 0
-) -> np.ndarray:
+def random_symmetric(n: int, scale: float, gamma: float, seed: int = 0) -> np.ndarray:
     """Generate symmetric M with guaranteed ``γ‖M‖₂ < 1``."""
     rng = np.random.default_rng(seed)
     A = rng.normal(0, 1, size=(n, n))

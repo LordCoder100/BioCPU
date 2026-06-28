@@ -5,6 +5,7 @@ and checks that accuracy exceeds a baseline threshold.
 
 Run:  pytest tests/test_mnist.py -v -s
 """
+
 from __future__ import annotations
 
 import numpy as np
@@ -14,6 +15,7 @@ import biocpu
 import biocpu.nn as nn
 
 # ── helpers ──────────────────────────────────────────────────────
+
 
 def load_mnist():
     """Load MNIST via torchvision → numpy float64 arrays."""
@@ -32,6 +34,7 @@ def load_mnist():
 
 # ── tests ────────────────────────────────────────────────────────
 
+
 def test_mnist_m0_baseline():
     """M=0 (no coupling), 3 layers, 10 epochs → accuracy > 90%."""
     X_train, y_train, X_test, y_test = load_mnist()
@@ -45,17 +48,20 @@ def test_mnist_m0_baseline():
 
     learner = biocpu.optim.Local(model, n_classes=10, lr=0.05, beta=0.5)
     learner.fit(
-        X_train, y_train,
-        X_val=X_test, y_val=y_test,
-        epochs=15, batch=128, seed=0, verbose=True,
+        X_train,
+        y_train,
+        X_val=X_test,
+        y_val=y_test,
+        epochs=15,
+        batch=128,
+        seed=0,
+        verbose=True,
     )
 
     final_val = learner.accuracy(X_test, y_test)
     print(f"\n  -> Final test accuracy: {final_val:.4f}")
 
-    assert final_val > 0.94, (
-        f"Expected > 94% accuracy on MNIST, got {final_val:.2%}"
-    )
+    assert final_val > 0.94, f"Expected > 94% accuracy on MNIST, got {final_val:.2%}"
 
 
 def test_mnist_with_coupling():
@@ -71,17 +77,20 @@ def test_mnist_with_coupling():
 
     learner = biocpu.optim.Local(model, n_classes=10, lr=0.05, beta=0.5)
     learner.fit(
-        X_train, y_train,
-        X_val=X_test, y_val=y_test,
-        epochs=15, batch=128, seed=0, verbose=True,
+        X_train,
+        y_train,
+        X_val=X_test,
+        y_val=y_test,
+        epochs=15,
+        batch=128,
+        seed=0,
+        verbose=True,
     )
 
     final_val = learner.accuracy(X_test, y_test)
     print(f"\n  -> Final test accuracy (coupled): {final_val:.4f}")
 
-    assert final_val > 0.94, (
-        f"Expected > 94% accuracy with coupling, got {final_val:.2%}"
-    )
+    assert final_val > 0.94, f"Expected > 94% accuracy with coupling, got {final_val:.2%}"
 
 
 def test_phase_context_populated():
@@ -121,4 +130,3 @@ if __name__ == "__main__":
     print("\n" + "=" * 60)
     print("ALL TESTS PASSED SUCCESSFULLY!")
     print("=" * 60)
-

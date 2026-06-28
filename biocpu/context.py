@@ -1,4 +1,5 @@
 """Structured context objects for BioCPU's two-phase learning."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -14,8 +15,8 @@ if TYPE_CHECKING:
 class LayerTrace:
     """Snapshot of one layer's free-phase equilibrium."""
 
-    module: SettleLinear          # the SettleLinear that produced this trace
-    input: np.ndarray       # (B, in_dim) — input received by the layer
+    module: SettleLinear  # the SettleLinear that produced this trace
+    input: np.ndarray  # (B, in_dim) — input received by the layer
     equilibrium: np.ndarray  # (B, out_dim) — settled output state
 
 

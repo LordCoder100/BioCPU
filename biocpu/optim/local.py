@@ -11,6 +11,7 @@ The model only knows ``settle()``.  All learning logic lives here so
 that alternative rules (feedback alignment, predictive coding) can be
 swapped in by replacing the learner.
 """
+
 from __future__ import annotations
 
 import numpy as np
@@ -30,8 +31,14 @@ class Local:
     lr : learning rate.
     """
 
-    def __init__(self, model, n_classes: int, beta: float = 0.5,
-                 lr: float = 0.05, feedback: str = "symmetric"):
+    def __init__(
+        self,
+        model,
+        n_classes: int,
+        beta: float = 0.5,
+        lr: float = 0.05,
+        feedback: str = "symmetric",
+    ):
         self.model = model
         self.n_classes = n_classes
         self.beta = beta

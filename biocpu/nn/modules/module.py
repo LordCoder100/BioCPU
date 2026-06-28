@@ -52,5 +52,4 @@ class Module:
         for name, p in self._parameters.items():
             lines.append(f"  ({name}): {p!r}")
         lines.append(")")
-        return "\n".join(lines) if len(lines) > 2 else \
-            self.__class__.__name__ + "()"
+        return "\n".join(lines) if len(lines) > 2 else self.__class__.__name__ + "()"
